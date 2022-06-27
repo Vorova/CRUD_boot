@@ -2,14 +2,12 @@ package com.vorova.crud_boot.service;
 
 import com.vorova.crud_boot.model.User;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
-    List<User> allUsers();
-    void add(User user);
-    void update(User user);
+    Iterable<User> allUsers();
+    void saveOrUpdate(User user);
     void delete(long id);
-    User getById(long id);
-
+    Optional<User> getById(long id);
 }

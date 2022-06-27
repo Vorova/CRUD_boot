@@ -1,44 +1,40 @@
 package com.vorova.crud_boot.service;
 
-import com.vorova.crud_boot.dao.UserDao;
 import com.vorova.crud_boot.model.User;
+import com.vorova.crud_boot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImp implements UserService{
 
-    private final UserDao userDao;
+    private final UserRepository repository;
 
     @Autowired
-    public UserServiceImp(UserDao userDao) {
-        this.userDao = userDao;
+    public UserServiceImp(UserRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public List<User> allUsers() {
-        return userDao.allUsers();
+    public Iterable<User> allUsers() {
+        return repository.findAll();
     }
 
     @Override
-    public void add(User user) {
-        userDao.add(user);
-    }
-
-    @Override
-    public void update(User user) {
-        userDao.update(user);
+    public void saveOrUpdate(User user) {
+        repository.save(user);
     }
 
     @Override
     public void delete(long id) {
-        userDao.delete(id);
+        Optional<User> user = getById(id);
+        user.ifPresent(repository::delete);
     }
 
     @Override
-    public User getById(long id) {
-        return userDao.getById(id);
+    public Optional<User> getById(long id) {
+        return repository.findById(id);
     }
 }
